@@ -1,0 +1,481 @@
+<html><head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&amp;family=Dancing+Script:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<title>A Special Gift</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+    :root {
+      --bg-pink: #FDF2F8;
+      --bg-cream: #FEFCE8;
+      --text-brown: #7C2D12;
+      --accent-pink: #FBCFE8;
+      --shadow-pink: #FCE7F3;
+      --gold-sparkle: #FDE047;
+      --door-wood: #855D44;
+      --door-frame: #6B4F3A;
+      --chest-wood: #A0522D;
+      --chest-metal: #C0C0C0;
+      --soft-glow: rgba(255, 255, 224, 0.3);
+    }
+    .font-dancing-script {
+      font-family: 'Dancing Script', cursive;
+    }
+    .stage {
+      transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+    }
+    .hidden-stage {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+      pointer-events: none;
+      position: absolute;
+    }.door-container {
+      perspective: 1000px;
+    }
+    .door {
+      width: 180px;
+      height: 280px;
+      background-color: var(--door-wood);
+      border: 8px solid var(--door-frame);
+      border-radius: 10px 10px 0 0;
+      position: relative;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 20px rgba(0,0,0,0.2);
+    }
+    .door.open {
+      transform: rotateY(-110deg) translateX(-50%);
+    }
+    .door-knob {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      width: 20px;
+      height: 20px;
+      background-color: #B8860B;border-radius: 50%;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      transform: translateY(-50%);
+    }
+    .door-hinge {
+      position: absolute;
+      left: -8px;width: 10px;
+      height: 40px;
+      background-color: #696969;}
+    .door-hinge.top { top: 30px; }
+    .door-hinge.bottom { bottom: 30px; }.treasure-chest {
+      width: 220px;
+      height: 150px;
+      background-color: var(--chest-wood);
+      border: 5px solid var(--chest-metal);
+      border-radius: 15px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease-in-out;
+    }
+    .treasure-chest.shaking {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0) scale(1.01); }
+      20%, 80% { transform: translate3d(2px, 0, 0) scale(1.01); }
+      30%, 50%, 70% { transform: translate3d(-3px, 0, 0) scale(1.01); }
+      40%, 60% { transform: translate3d(3px, 0, 0) scale(1.01); }
+    }
+    .chest-lid {
+      width: 100%;
+      height: 50%;
+      background-color: var(--chest-wood);
+      border-bottom: 5px solid var(--chest-metal);
+      border-radius: 15px 15px 0 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: bottom center;
+      transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .treasure-chest.open .chest-lid {
+      transform: rotateX(-120deg);
+    }
+    .chest-lock {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      width: 30px;
+      height: 25px;
+      background-color: #FFD700;border: 2px solid #DAA520;border-radius: 5px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+     .keyhole {
+        width: 6px;
+        height: 10px;
+        background-color: #333;
+        border-radius: 2px 2px 0 0;
+        position: relative;
+    }
+    .keyhole::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 10px;
+        height: 3px;
+        background-color: #333;
+        border-radius: 1px;
+    }.envelope-stage {transition: opacity 0.8s 0.5s ease-in-out, transform 0.8s 0.5s ease-in-out;}
+    .envelope {
+      transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), box-shadow 0.6s ease-in-out;
+      cursor: pointer;
+    }
+    .envelope.open {
+      transform: translateY(-30px) rotateX(15deg) scale(1.05);
+      box-shadow: 0 25px 50px -12px var(--shadow-pink);
+    }
+    .flap {
+      transition: transform 0.7s 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      transform-origin: top center;
+    }
+    .envelope.open .flap {
+      transform: rotateX(-180deg) translateY(-5px);
+    }
+    .letter {
+      transition: transform 0.8s 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.7s 0.5s ease-out;
+      transform: translateY(120%) scale(0.8);
+      opacity: 0;
+    }
+    .envelope.open .letter {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    .chocolate-image {
+      transition: opacity 0.8s 0.8s ease-in, transform 0.8s 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+    }
+    .envelope.open .chocolate-image {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .gift-text {
+      transition: opacity 0.5s 1.2s ease-in, transform 0.5s 1.2s ease-out;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    .envelope.open .gift-text {
+      opacity: 1;
+      transform: translateY(0);
+    }.sparkle {
+      position: absolute;
+      background-color: var(--gold-sparkle);
+      border-radius: 50%;
+      animation: sparkle-animation 1.2s infinite ease-out;
+      opacity: 0;
+      box-shadow: 0 0 8px var(--gold-sparkle), 0 0 12px var(--gold-sparkle);
+    }
+    @keyframes sparkle-animation {
+      0% { transform: scale(0.3) rotate(0deg); opacity: 0.6; }
+      25% { transform: scale(1) rotate(45deg); opacity: 1; }
+      50% { transform: scale(0.6) rotate(90deg); opacity: 0.8; }
+      75% { transform: scale(1.2) rotate(135deg); opacity: 1; }
+      100% { transform: scale(0.3) rotate(180deg); opacity: 0; }
+    }
+    .floating-element {
+      position: absolute;
+      font-size: 22px;
+      animation: float-element 6s infinite ease-in-out;
+      opacity: 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    @keyframes float-element {
+      0% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(0.8); opacity: 0; }
+      20% { opacity: 0.9; }
+      50% { transform: translateY(-35px) translateX(15px) rotate(-10deg) scale(1.1); opacity: 1; }
+      80% { opacity: 0.9; }
+      100% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(0.8); opacity: 0; }
+    }.confetti-piece {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: var(--accent-pink);
+        opacity: 0;
+        border-radius: 2px;
+        animation: fall 3s linear infinite, float-up 3s ease-out forwards;
+    }
+    .confetti-piece.gold { background-color: var(--gold-sparkle); }
+    .confetti-piece.pink-light { background-color: # розовый; }.confetti-piece.blue-light { background-color: #ADD8E6; }@keyframes fall {
+        to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes float-up {
+        0% { transform: translateY(0) scale(0.5); opacity: 0; }
+        20% { opacity: 0.8; }
+        100% { transform: translateY(-80px) scale(1); opacity: 1; }
+    }
+    .global-confetti-piece {
+        position: fixed;width: 6px;
+        height: 10px;background-color: var(--accent-pink);
+        opacity: 0;
+        animation: global-float 5s ease-out forwards;
+        z-index: 9999;border-radius: 1px;
+    }
+    .global-confetti-piece.c2 { background-color: var(--gold-sparkle); width: 8px; height: 8px; border-radius: 50%;}
+    .global-confetti-piece.c3 { background-color: #A7F3D0; }@keyframes global-float {
+        0% { transform: translateY(20px) rotate(0deg) scale(0.2); opacity: 0; }
+        20% { opacity: 0.7; }
+        100% { transform: translateY(-150px) rotate(360deg) scale(1); opacity: 0; }
+    }.bg-stage-1 { background: radial-gradient(circle, #593d2b 0%, #3a2a1d 100%); }.bg-stage-2 { background: radial-gradient(circle, #704214 0%, #4a2c0f 100%); }.bg-stage-3 { background-color: var(--bg-cream); }.soft-light-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, var(--soft-glow) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;opacity: 0.7;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-brown transition-colors duration-1000 ease-in-out" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+<div class="relative flex size-full min-h-screen flex-col items-center justify-center p-6 overflow-hidden" id="gift-container">
+<div class="absolute inset-0 pointer-events-none">
+<div class="soft-light-overlay" id="light-overlay"></div>
+<div class="floating-element text-[var(--accent-pink)]" style="top: 15%; left: 10%; animation-delay: 0s;">✨</div>
+<div class="floating-element text-[var(--accent-pink)]" style="top: 25%; left: 85%; animation-delay: 0.7s;">💖</div>
+<div class="floating-element text-[var(--gold-sparkle)]" style="top: 65%; left: 20%; animation-delay: 1.2s;">⭐</div>
+<div class="floating-element text-[var(--accent-pink)]" style="top: 75%; left: 75%; animation-delay: 1.9s;">💕</div>
+<div class="sparkle" style="top: 20%; left: 5%; width: 7px; height: 7px; animation-delay: 0.3s;"></div>
+<div class="sparkle" style="top: 40%; left: 92%; width: 9px; height: 9px; animation-delay: 0.8s;"></div>
+<div class="sparkle" style="top: 55%; left: 35%; width: 6px; height: 6px; animation-delay: 1.3s;"></div>
+<div class="sparkle" style="top: 80%; left: 60%; width: 8px; height: 8px; animation-delay: 1.8s;"></div>
+</div>
+<div class="stage flex flex-col items-center justify-center w-full h-full" id="stage-door">
+<div class="door-container">
+<div class="door" id="wooden-door">
+<div class="door-hinge top"></div>
+<div class="door-hinge bottom"></div>
+<div class="door-knob"></div>
+</div>
+</div>
+<p class="mt-10 text-xl text-white opacity-90" id="instruction-door">Toca la puerta...</p>
+</div>
+<div class="stage hidden-stage flex flex-col items-center justify-center w-full h-full" id="stage-chest">
+<div class="treasure-chest" id="treasure-chest">
+<div class="chest-lid"></div>
+<div class="chest-lock"><div class="keyhole"></div></div>
+</div>
+<p class="mt-10 text-xl text-yellow-100 opacity-90" id="instruction-chest">Toca el cofre...</p>
+</div>
+<div class="stage envelope-stage hidden-stage flex flex-col items-center justify-center w-full h-full" id="stage-envelope">
+<div class="envelope relative w-72 h-48 bg-[var(--bg-pink)] rounded-xl shadow-xl" id="envelope">
+<div class="flap absolute top-0 left-0 w-full h-1/2 bg-[var(--accent-pink)] rounded-t-xl" style="border-bottom: 2px solid var(--shadow-pink);">
+<div class="absolute inset-x-0 bottom-0 h-0 w-0 border-l-[144px] border-r-[144px] border-b-[96px] border-l-transparent border-r-transparent border-b-[var(--bg-pink)]" style="transform: translateY(2px);"></div>
+</div>
+<div class="absolute top-0 left-0 w-full h-full bg-[var(--bg-pink)] rounded-xl"></div>
+<div class="letter absolute inset-x-4 top-[45%] w-[calc(100%-2rem)] h-auto bg-white p-5 rounded-lg shadow-inner flex flex-col items-center text-center" id="letter-content" style="z-index: 10;">
+<img alt="Ferrero Rocher Chocolates" class="chocolate-image w-28 h-28 mb-4 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOCk9EeKBT3C_Wm1DihCbUBeHX-820FcZ7NBN1gyBsSr_0s7Jjs1Lo0vZ0u0hOcpbe0sp7uDVVss3xsfbk4S5AMofKwxKdvZjF7p24wNKVizIIAnRgR8vO-grLaI6dBXz8-N6CMJAHTg1OSPxW25iG_I77tHGMrfHP_ZpkO10ENqXbQlLLes6pRp9pzFz1tyYsaCVYz4aiMXpX9FdDemW7ef8RAD3LNNnyCjuHxRFTwvrvDImXlyEwqzohA4PDSA-s-pVjpgaiJLs"/> 
+<p class="gift-text text-[var(--text-brown)] text-2xl font-dancing-script font-semibold">Un chocolatito de regalo para ti</p>
+</div>
+</div>
+<p class="mt-10 text-xl text-[var(--text-brown)] opacity-90" id="instruction-envelope">Toca el sobre para abrir</p>
+</div>
+<div class="absolute inset-0 pointer-events-none overflow-hidden z-50" id="confetti-container"></div>
+</div>
+<audio id="door-creak-sound" preload="auto" src="https://cdn.pixabay.com/audio/2021/08/04/audio_50475110b9.mp3"></audio>
+<audio id="chest-shake-sound" preload="auto" src="https://cdn.pixabay.com/audio/2022/01/18/audio_745a7a5116.mp3"></audio>
+<audio id="chest-click-sound" preload="auto" src="https://cdn.pixabay.com/audio/2022/03/15/audio_3741ac3009.mp3"></audio>
+<audio id="envelope-open-sound" preload="auto" src="https://cdn.pixabay.com/audio/2022/03/07/audio_c696123197.mp3"></audio>
+<audio id="confetti-sound" preload="auto" src="https://cdn.pixabay.com/audio/2022/03/10/audio_579374fba7.mp3"></audio>
+<audio id="tap-confetti-sound" preload="auto" src="https://cdn.pixabay.com/audio/2023/09/02/audio_379b4a15f6.mp3"></audio>
+<script>
+    const giftContainer = document.getElementById('gift-container');
+    const bodyElement = document.body;
+    const lightOverlay = document.getElementById('light-overlay');
+    const stageDoor = document.getElementById('stage-door');
+    const woodenDoor = document.getElementById('wooden-door');
+    const instructionDoor = document.getElementById('instruction-door');
+    const stageChest = document.getElementById('stage-chest');
+    const treasureChest = document.getElementById('treasure-chest');
+    const instructionChest = document.getElementById('instruction-chest');
+    const chestLid = treasureChest.querySelector('.chest-lid');
+    const stageEnvelope = document.getElementById('stage-envelope');
+    const envelope = document.getElementById('envelope');
+    const instructionEnvelope = document.getElementById('instruction-envelope');
+    const letterContent = document.getElementById('letter-content');
+    const confettiContainer = document.getElementById('confetti-container');
+    const doorCreakSound = document.getElementById('door-creak-sound');
+    const chestShakeSound = document.getElementById('chest-shake-sound');
+    const chestClickSound = document.getElementById('chest-click-sound');
+    const envelopeOpenSound = document.getElementById('envelope-open-sound');
+    const confettiSound = document.getElementById('confetti-sound');
+    const tapConfettiSound = document.getElementById('tap-confetti-sound');
+    const floatingElements = document.querySelectorAll('.floating-element');
+    const sparkles = document.querySelectorAll('.sparkle');
+    let currentStage = 1;
+    let envelopeOpened = false;
+    function playSound(soundElement) {
+      if (soundElement) {
+        soundElement.currentTime = 0;
+        soundElement.play().catch(error => console.warn("Audio play failed:", error));
+      }
+    }
+    function transitionStage(hideStage, showStage, newBgClass) {
+      hideStage.classList.add('hidden-stage');
+      setTimeout(() => {
+        hideStage.style.display = 'none'; // Fully hide after transition
+        showStage.style.display = 'flex'; // Prepare for show
+        bodyElement.className = `transition-colors duration-1000 ease-in-out ${newBgClass}`; // Update background
+        if (newBgClass === 'bg-stage-3') {
+          lightOverlay.style.background = 'radial-gradient(ellipse at center, rgba(253, 242, 248, 0.2) 0%, rgba(254, 252, 232, 0) 70%)'; // Lighter for envelope
+        } else if (newBgClass === 'bg-stage-2') {
+             lightOverlay.style.background = 'radial-gradient(ellipse at center, rgba(240, 200, 150, 0.25) 0%, rgba(0,0,0,0) 70%)';
+        } else {
+            lightOverlay.style.background = 'radial-gradient(ellipse at center, var(--soft-glow) 0%, rgba(255,255,255,0) 70%)';
+        }
+        setTimeout(() => { // Stagger the appearance for a smoother feel
+            showStage.classList.remove('hidden-stage');
+        }, 50);
+      }, 800); // Match transition duration
+    }
+    // Initialize
+    bodyElement.classList.add('bg-stage-1');
+    lightOverlay.style.background = 'radial-gradient(ellipse at center, rgba(200,150,100,0.2) 0%, rgba(0,0,0,0) 70%)'; // Darker for door
+    stageDoor.style.display = 'flex';
+    stageDoor.classList.remove('hidden-stage');
+    // --- Stage 1: Door ---
+    woodenDoor.addEventListener('click', () => {
+      if (currentStage !== 1) return;
+      playSound(doorCreakSound);
+      woodenDoor.classList.add('open');
+      instructionDoor.style.opacity = '0';
+      currentStage = 0; // Prevent re-trigger
+      setTimeout(() => {
+        transitionStage(stageDoor, stageChest, 'bg-stage-2');
+        currentStage = 2;
+      }, 1000); // Wait for door animation
+    });
+    // --- Stage 2: Treasure Chest ---
+    treasureChest.addEventListener('click', () => {
+      if (currentStage !== 2 || treasureChest.classList.contains('open')) return;
+      treasureChest.classList.add('shaking');
+      playSound(chestShakeSound);
+      setTimeout(() => {
+        treasureChest.classList.remove('shaking');
+        treasureChest.classList.add('open');
+        playSound(chestClickSound);
+        instructionChest.style.opacity = '0';
+        currentStage = 0; // Prevent re-trigger
+        setTimeout(() => {
+          transitionStage(stageChest, stageEnvelope, 'bg-stage-3');
+          currentStage = 3;
+        }, 1200); // Wait for lid animation + a bit more
+      }, 600); // Shake duration
+    });
+    // --- Stage 3: Envelope ---
+    envelope.addEventListener('click', () => {
+      if (currentStage !== 3 || envelopeOpened) return;
+      envelopeOpened = true;
+      envelope.classList.add('open');
+      instructionEnvelope.style.opacity = '0';
+      instructionEnvelope.style.transform = 'translateY(20px)';
+      instructionEnvelope.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      playSound(envelopeOpenSound);
+      setTimeout(() => {
+        createConfettiExplosion(letterContent.getBoundingClientRect());
+        playSound(confettiSound);
+      }, 1300); // After letter content is mostly visible
+      // Activate floating elements and sparkles (existing logic)
+      floatingElements.forEach(el => {
+        el.style.animationPlayState = 'running';
+        setTimeout(() => el.style.opacity = '1', parseFloat(el.style.animationDelay || 0) * 1000 + 300);
+      });
+      sparkles.forEach(el => {
+        el.style.animationPlayState = 'running';
+        setTimeout(() => el.style.opacity = '1', parseFloat(el.style.animationDelay || 0) * 1000 + 200);
+      });
+    });
+    // Initialize animations to paused (existing logic)
+    floatingElements.forEach(el => el.style.animationPlayState = 'paused');
+    sparkles.forEach(el => el.style.animationPlayState = 'paused');
+    // Confetti Explosion
+    function createConfettiExplosion(targetRect) {
+      const numConfetti = 50;
+      const centerX = targetRect.left + targetRect.width / 2;
+      const centerY = targetRect.top + targetRect.height / 2;
+      for (let i = 0; i < numConfetti; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti-piece');
+        const colors = ['gold', 'pink-light', 'blue-light', 'var(--accent-pink)'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        if (color.startsWith('var')) {
+            confetti.style.backgroundColor = color;
+        } else {
+            confetti.classList.add(color);
+        }
+        const angle = Math.random() * 360;
+        const distance = Math.random() * 100 + 50; // Spread distance
+        const x = Math.cos(angle * Math.PI / 180) * distance;
+        const y = Math.sin(angle * Math.PI / 180) * distance;
+        confetti.style.left = `${centerX + x - 4}px`; // Adjust for confetti size
+        confetti.style.top = `${centerY + y - 4}px`;
+        confetti.style.transform = `rotate(${Math.random() * 360}deg) scale(0)`; // Start small
+        confetti.style.animationDelay = `${Math.random() * 0.2}s`;
+        confetti.style.animationName = 'explode-confetti, fall-confetti';
+        confetti.style.animationDuration = '0.5s, 2.5s';
+        confetti.style.animationTimingFunction = 'ease-out, linear';
+        confetti.style.animationFillMode = 'forwards, forwards';
+        confetti.style.animationDelay = `${Math.random() * 0.1}s, ${0.3 + Math.random() * 0.2}s`;
+        confettiContainer.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000); // Remove after animation
+      }
+    }
+    // Define @keyframes for confetti explosion directly in JS for dynamic creation
+    if (!document.getElementById('confetti-keyframes')) {
+        const styleSheet = document.createElement("style");
+        styleSheet.id = "confetti-keyframes";
+        styleSheet.innerText = `
+            @keyframes explode-confetti {
+                0% { transform: scale(0) rotate(0deg); opacity: 1; }
+                100% { transform: scale(1.2) rotate(${Math.random() * 180 - 90}deg); opacity: 1; }
+            }
+            @keyframes fall-confetti {
+                0% { transform: translateY(0px) rotate(${Math.random()*360}deg); opacity: 1; }
+                100% { transform: translateY(200px) rotate(${Math.random()*360 + 360}deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
+    // Global Confetti on Tap
+    document.addEventListener('click', (event) => {
+      createGlobalConfetti(event.clientX, event.clientY);
+      playSound(tapConfettiSound);
+    });
+    function createGlobalConfetti(x, y) {
+      const numPieces = Math.floor(Math.random() * 3) + 2; // 2 to 4 pieces
+      for (let i = 0; i < numPieces; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('global-confetti-piece');
+        const type = Math.random();
+        if (type < 0.4) piece.classList.add('c2');
+        else if (type < 0.7) piece.classList.add('c3');
+        piece.style.left = `${x - 4 + (Math.random() * 20 - 10)}px`;
+        piece.style.top = `${y - 5 + (Math.random() * 20 - 10)}px`;
+        piece.style.animationDelay = `${Math.random() * 0.1}s`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 5000);
+      }
+    }
+  </script>
+
+</body></html>
